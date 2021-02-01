@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.robson.workshopmongo.domain.User;
 import com.robson.workshopmongo.repository.UserRepository;
+import com.robson.workshopmongo.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -19,4 +20,17 @@ public class UserService {
 		return repo.findAll();
 	}
 
+	/*
+	 * Desconfio que o erro é porque ele não aceita a seguinte linha
+	 * User user = repo.findOne(id);
+	 * talvez por isso que o código não reconhece o id.
+	 */
+	public User findById(String id) {
+		Object user = repo.findById(id);
+		//User user = repo.findOne(id);
+		if(user == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado");
+		}
+		return (User) user;
+	}
 }
