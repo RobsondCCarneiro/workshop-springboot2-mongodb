@@ -1,8 +1,11 @@
 package com.robson.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="user")
@@ -14,6 +17,14 @@ public class User implements Serializable{
 	private String id;
 	private String name;
 	private String email;
+	
+	/*
+	 * Para evitar trafego desnecessario com o carregamento automático do posts dos usuários, 
+	 * então usa-se o lazy=true, que indica que os posts só serão carregados quando for
+	 * explicitamente carregados.
+	 */
+	@DBRef(lazy = true)
+	private List<Post> posts = new ArrayList<>();
 	
 	public User() {
 		
@@ -73,6 +84,14 @@ public class User implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 	
 	
