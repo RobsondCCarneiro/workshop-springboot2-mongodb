@@ -1,6 +1,7 @@
 package com.robson.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,22 +23,29 @@ public class UserService {
 	}
 
 	/*
-	 * Desconfio que o erro é porque ele não aceita a seguinte linha
+	 * Foi descontinuado o método findOne(id)
 	 * User user = repo.findOne(id);
-	 * talvez por isso que o código não reconhece o id.
+	 * Então foi implementado o de baixo
 	 */
 	public User findById(String id) {
-		Object user = repo.findById(id);
+		Optional<User> user = repo.findById(id);
+		 
 		//User user = repo.findOne(id);
-		if(user == null) {
+		
+		if(user.isEmpty()) {
 			throw new ObjectNotFoundException("Objeto não encontrado");
 		}
-		return (User) user;
+		return user.get();
 	}
 	
 	//Metodos criados para inserir dados na tabela de do Banco de Dados
 	public User insert(User obj) {
 		return repo.insert(obj);
+	}
+	
+	public void delete(String id) {
+		findById(id);
+		repo.deleteById(id);
 	}
 	
 	public User fromDTO(UserDTO objDto) {
