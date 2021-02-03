@@ -1,5 +1,6 @@
 package com.robson.workshopmongo.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -19,5 +20,9 @@ public interface PostRepository extends MongoRepository<Post, String>{
 	
 	//Para aceitar maiusculos e minusculos temos que ignorar o Case Sensitive
 	List<Post> findByTitleContainingIgnoreCase(String text);
+	
+	//Metodo para consultar com vários critérios
+	@Query("{ $and: [ {date: {$gte: ?1} }, { date: { $lte: ?2} } , { $or: [ { 'title': { $regex: ?0, $options: 'i' } }, { 'body': { $regex: ?0, $options: 'i' } }, { 'comments.text': { $regex: ?0, $options: 'i' } } ] } ] }")
+	List<Post> fullSearch(String text, Date minDate, Date maxDate);
 
 }

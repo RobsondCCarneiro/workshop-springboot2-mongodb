@@ -1,5 +1,6 @@
 package com.robson.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +33,16 @@ public class PostService {
 	public List<Post> findByTitle(String text){
 		//return repo.findByTitleContainingIgnoreCase(text);
 		return repo.searchTitle(text);
+	}
+	
+	//Este método é para a busca com vários critérios
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+		/*
+		 * Como a data é calculada, porque o tipo da data é instant (milissegundo),
+		 * então é necessário fazer o método para comparar o dia seguinte a data informada
+		 * a meia-noite para incluir até 23:59:59 da data máxima informada
+		 */
+		maxDate = new Date(maxDate.getTime() + 24*60*60*1000);
+		return repo.fullSearch(text, minDate, maxDate);
 	}
 }
