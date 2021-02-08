@@ -48,20 +48,19 @@ public class UserService {
 		repo.deleteById(id);
 	}
 	
-	/*
+	//Metodo para atualizar o Banco de Dados
 	public User update(User obj) {
 		Optional<User> newObj = repo.findById(obj.getId());
-		updateData(newObj, obj);
-		return repo.save(newObj.get());
+		User newObjt = newObj.get();
+		updateData(newObjt, obj);
+		return repo.save(newObjt);
 	}
 	
-	//Atenção: Tenho que encontrar uma forma de acessar os métodos dentro do Optional
-	private void updateData(Optional<User> newObj, User obj) {
-		newObj.setName(obj.getName());
-		newObj.setEmail(obj.getEmail());
+	private void updateData(User newObjt, User obj) {
+		newObjt.setName(obj.getName());
+		newObjt.setEmail(obj.getEmail());
 	}
-	*/
-	
+
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
